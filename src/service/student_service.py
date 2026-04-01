@@ -20,14 +20,14 @@ class StudentService:
     #     print(f"Year: {student.year}")
 
     def get_all_students(self) -> list[str]:
-        formatted_Students = []
-        for student in self.students_list:
-            line = f"{student.first_name}-{student.last_name} - {student.major} - {student.email} - {student.year}"
-            formatted_Students.append(line)
-        return formatted_Students
+        # formatted_Students = []
+        # for student in self.students_list:
+        #     line = f"{student.first_name}-{student.last_name} - {student.major} - {student.email} - {student.year}"
+        #     formatted_Students.append(line)
+        return self.students_list
 
 
-    def get_student_by_frist_name(self, first_name: str) -> Student | None:
+    def get_student_by_first_name(self, first_name: str) -> Student | None:
         for student in self.students_list:
             if student.first_name == first_name:
                 return student

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from src.service.student_service import StudentService
+from service.student_service import StudentService
 
 # To prevent circular imports
 if TYPE_CHECKING:

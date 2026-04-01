@@ -1,12 +1,13 @@
 from __future__ import annotations
 from abc import abstractmethod
 from typing import TYPE_CHECKING
+from models.student import Student
 
 if TYPE_CHECKING:
     from presentation.terminal import Terminal
 
 class Menu:
-    def __int__(self, terminal: Terminal):
+    def __init__(self, terminal: Terminal):
 
         self.terminal: Terminal = terminal
 
@@ -70,6 +71,13 @@ class NewStudentMenu(Menu):
         print("Enter the student's major:")
         major: str = input()
 
+        new_student = Student(first_name, last_name, major, email, year)
+        self.terminal.student_service.save(new_student)
+
+        input("Press Enter to return to the main menu...")
+        self.terminal.navigateToMenu(MainMenu(self.terminal))
+
+
 class ShowAllStudentsMenu(Menu):
 
     def render(self):
@@ -113,7 +121,7 @@ class NewProfessorMenu(Menu):
     def render(self):
         print("\n[Professor Feature Coming Soon]")
         input("Press Enter to return...")
-        self.terminal.navigate(MainMenu(self.terminal))
+        self.terminal.navigateToMenu(MainMenu(self.terminal))
 
 class NewCourseMenu(Menu):
     def render(self):
@@ -125,6 +133,6 @@ class EnrollmentMenu(Menu):
     def render(self):
         print("\n[Enrollment Feature Coming Soon]")
         input("Press Enter to return...")
-        self.terminal.navigate(MainMenu(self.terminal))
+        self.terminal.navigateToMenu(MainMenu(self.terminal))
 
             
