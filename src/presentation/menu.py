@@ -20,14 +20,25 @@ class MainMenu(Menu):
 
     def render(self) -> None:
 
+        # print("""
+        #      ===========================
+        #     Welcome to Revature Admin
+        #     1) Create new student
+        #     2) Create new professor
+        #     3) Enroll student in class
+        #     4) Show Student
+        #     5) Show All Students
+        #     Q) Exit
+        #      ===========================
+        #             """)
         print("""
              ===========================
             Welcome to Revature Admin
-            1) Create new student
-            2) Create new professor
-            3) Enroll student in class
-            4) Show Student
-            5) Show All Students
+            
+            1) Manage Students
+            2) Manage Professors
+            3) Manage Courses
+            4) Reports
             Q) Exit
              ===========================
                     """)
@@ -38,44 +49,203 @@ class MainMenu(Menu):
         # Switch statement for user input
         match user_input:
             case "1":
-                self.terminal.navigateToMenu(NewStudentMenu(self.terminal))
+                self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
 
             case "2":
-                self.terminal.navigateToMenu(NewProfessorMenu(self.terminal))
+                self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
 
             case "3":
-                self.terminal.navigateToMenu(EnrollStudentMenu(self.terminal))
+                self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
 
             case "4":
-                self.terminal.navigateToMenu(ShowStudentMenu(self.terminal))
-
-            case "5":
-                self.terminal.navigateToMenu(ShowAllStudentsMenu(self.terminal))
+                self.terminal.navigateToMenu(ReportsMenu(self.terminal))
 
             case "q":
                 self.terminal.exit()
+
+
+class ManageStudentsMenu(Menu):
+
+    def render(self) -> None:
+        
+        print("""
+             ===========================
+                 Manage Students
+            1) Add new student
+            2) Show student
+            3) Show all students
+            4) Update student
+            5) Remove student
+            B) Back to main menu
+             ===========================
+                    """)
+        
+        user_input: str = input().lower()
+
+        match user_input:
+            case "1":
+                self.terminal.navigateToMenu(NewStudentMenu(self.terminal))
+
+            case "2":
+                self.terminal.navigateToMenu(ShowStudentMenu(self.terminal))
+
+            case "3":
+                self.terminal.navigateToMenu(ShowAllStudentsMenu(self.terminal))
+
+            case "4":
+                self.terminal.navigateToMenu(UpdateStudentMenu(self.terminal))
+
+            case "5":
+                self.terminal.navigateToMenu(RemoveStudentMenu(self.terminal))
+
+            case "b":
+                self.terminal.navigateToMenu(MainMenu(self.terminal))
+
+
+class ManageProfessorsMenu(Menu):
+
+    def render(self) -> None:
+
+        print("""
+             ===========================
+                Manage Professors
+            1) Add new professor
+            2) Show all professors
+            3) Update professor
+            4) Remove professor
+            B) Back to main menu
+             ===========================
+                    """)
+        user_input: str = input().lower()
+
+        match user_input:
+            case "1":
+                self.terminal.navigateToMenu(NewProfessorMenu(self.terminal))
+            
+            case "2":
+                self.terminal.navigateToMenu(ShowAllProfessorsMenu(self.terminal))
+
+            case "3":
+                self.terminal.navigateToMenu(UpdateProfessorMenu(self.terminal))
+
+            case "4":
+                self.terminal.navigateToMenu(DeleteProfessorMenu(self.terminal))
+
+            case "b":
+                self.terminal.navigateToMenu(MainMenu(self.terminal))
+
+
+class ManageCoursesMenu(Menu):
+
+    def render(self) -> None:
+
+        print("""
+             ===========================
+                 Manage Courses
+            1) Add new course
+            2) Show all courses
+            3) Update course
+            4) Remove course
+            5) Enroll student in course
+            6) Drop student from course
+            7) Show all students in course
+            8) Show all courses for student
+            B) Back to main menu
+             ===========================
+                    """)
+    
+        user_input: str = input().lower()
+
+        match user_input:
+            case "1":
+                self.terminal.navigateToMenu(NewCourseMenu(self.terminal))
+
+            case "2":
+                self.terminal.navigateToMenu(ShowAllCoursesMenu(self.terminal))
+
+            case "3":
+                self.terminal.navigateToMenu(UpdateCourseMenu(self.terminal))
+
+            case "4":
+                self.terminal.navigateToMenu(DeleteCourseMenu(self.terminal))
+
+            case "5":
+                self.terminal.navigateToMenu(EnrollStudentMenu(self.terminal))
+
+            case "6":
+                self.terminal.navigateToMenu(DropStudentMenu(self.terminal))
+
+            case "7":
+                self.terminal.navigateToMenu(ShowEnrolledStudentsMenu(self.terminal))
+
+            case "8":
+                self.terminal.navigateToMenu(ShowStudentCoursesMenu(self.terminal))
+
+            case "b":
+                self.terminal.navigateToMenu(MainMenu(self.terminal))
+
+
+class ReportsMenu(Menu):
+
+    def render(self) -> None:
+
+        print("""
+             ===========================
+                    Reports Menu Coming Soon
+             ===========================
+                    """)
+
 
 class NewStudentMenu(Menu):
 
     def render(self):
         print("""Create New Student""")
         print()
-        print("Enter the student's first name:")
+        print("Enter the student's id:")
+        id: int = int(input())
+        print("Enter first name:")
         first_name: str = input()
-        print("Enter the student's last name:")
+        print("Enter last name:")
         last_name: str = input()
-        print("Enter the student's email:")
+        print("Enter email:")
         email: str = input()
-        print("Enter the school year:")
+        print("Enter year: ")
         year: str = input()
-        print("Enter the student's major:")
+        print("Enter major: ")
         major: str = input()
 
-        new_student = Student(first_name, last_name, major, email, year)
+        new_student = Student(id, first_name, last_name, major, email, year)
         self.terminal.student_service.save(new_student)
 
-        input("Press Enter to return to the main menu...")
-        self.terminal.navigateToMenu(MainMenu(self.terminal))
+        input("Press Enter to return to go back ...")
+        self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
+
+
+class ShowStudentMenu(Menu):
+
+    def render(self):
+        print("""
+             ===========================
+                    Show Student
+             ===========================
+                    """)
+        print()
+        print("Enter student's ID:")
+        id: int = int(input())
+
+        student = self.terminal.student_service.get_student_by_id(id)
+
+        if not student:
+            print(f"No student found with ID '{id}'.")
+        else:
+            print(f"Student found with ID '{id}':")
+            print(f"Name: {student.first_name} {student.last_name}")
+            print(f"Email: {student.email}")
+            print(f"Year: {student.year}")
+            print(f"Major: {student.major}")
+
+        input("Press Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
 
 
 class ShowAllStudentsMenu(Menu):
@@ -91,26 +261,6 @@ class ShowAllStudentsMenu(Menu):
                 print(f"{student.first_name} {student.last_name} - {student.email} - {student.year} - {student.major}")
 
         
-        input("Press Enter to return to the main menu...")
-        self.terminal.navigateToMenu(MainMenu(self.terminal))
-
-class ShowStudentMenu(Menu):
-
-    def render(self):
-        print("""Show Student""")
-        print("Enter the student's first name:")
-        first_name: str = input()
-
-        student = self.terminal.student_service.get_student_by_first_name(first_name)
-
-        if not student:
-            print(f"No student found with the first name '{first_name}'.")
-        else:
-            print(f"Name: {student.first_name} {student.last_name}")
-            print(f"Email: {student.email}")
-            print(f"Year: {student.year}")
-            print(f"Major: {student.major}")
-
         input("Press Enter to return to the main menu...")
         self.terminal.navigateToMenu(MainMenu(self.terminal))
 

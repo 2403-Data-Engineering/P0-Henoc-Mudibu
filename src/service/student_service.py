@@ -27,8 +27,14 @@ class StudentService:
         return self.students_list
 
 
-    def get_student_by_first_name(self, first_name: str) -> Student | None:
+    # def get_student_by_first_name(self, first_name: str) -> Student | None:
+    #     for student in self.students_list:
+    #         if student.first_name == first_name:
+    #             return student
+    #     return None
+
+    def get_student_by_id(self, id: int) -> Student | None:
         for student in self.students_list:
-            if student.first_name == first_name:
+            if student.id == id:
                 return student
         return None
