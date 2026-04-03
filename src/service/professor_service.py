@@ -23,7 +23,7 @@ class ProfessorService:
 
         professor = self.get_professor_by_id(professor_id)
 
-        if professor == None:
+        if professor is None:
             print(f"No professor found with ID {professor_id}. Update failed.")
             return False
         
@@ -36,7 +36,7 @@ class ProfessorService:
 
         professor = self.get_professor_by_id(professor_id)
 
-        if professor == None:
+        if professor is None:
             print(f"No professor found with ID {professor_id}. Deletion failed.")
             return False
         
