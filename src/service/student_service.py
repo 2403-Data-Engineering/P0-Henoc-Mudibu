@@ -38,3 +38,21 @@ class StudentService:
             if student.id == id:
                 return student
         return None
+    
+    def update_student(self, id: int, updated_student: Student) -> bool:
+        for index, student in enumerate(self.students_list):
+            if student.id == id:
+                self.students_list[index] = updated_student
+                return True
+            
+        print(f"Student with id {id} not found.")
+        return False
+
+    def delete_student(self, id: int) -> bool:
+        for index, student in enumerate(self.students_list):
+            if student.id == id:
+                del self.students_list[index]
+                return True
+            
+        print(f"Student with id {id} not found.")
+        return False
