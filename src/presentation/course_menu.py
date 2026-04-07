@@ -234,3 +234,54 @@ class DropStudentMenu(Menu):
 
            input("Press Enter to return to go back...")
            self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+
+
+class ShowEnrolledStudentsMenu(Menu):
+
+    def render(self):
+        print("""
+             ===========================
+               Enrolled Students
+             ===========================
+                    """)
+        
+        print("Enter the course ID to view enrolled students:")
+        course_id: int = int(input())
+
+        enrolled_students = self.terminal.course_service.get_enrolled_students(course_id)
+
+        if not enrolled_students:
+            print("No students enrolled in this course.")
+        else:
+            for student in enrolled_students:
+                print(f"[{student.id}] {student.first_name} {student.last_name} - {student.email}")
+
+
+        input("Press Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+
+
+class ShowStudentCoursesMenu(Menu):
+
+    def render(self):
+        print("""
+             ===========================
+               Student's Courses
+             ===========================
+                    """)
+        
+        print("Enter the student ID to view their courses:")
+        student_id: int = int(input())
+
+        courses = self.terminal.course_service.get_courses_for_student(student_id)
+
+        if not courses:
+            print(f"No courses found for student with ID {student_id}.")
+        else:
+            for course in courses:
+                print(f"[{course.id}] {course.name} - {course.description}")
+
+        input("Press Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+
+
