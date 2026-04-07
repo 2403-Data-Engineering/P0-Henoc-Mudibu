@@ -138,7 +138,19 @@ class ManageProfessorsMenu(Menu):
 
 class ManageCoursesMenu(Menu):
 
+
     def render(self) -> None:
+
+        from presentation.course_menu import (
+            NewCourseMenu,
+            ShowAllCoursesMenu,
+            UpdateCourseMenu,
+            DeleteCourseMenu,
+            EnrollStudentMenu,
+            DropStudentMenu,
+            ShowEnrolledStudentsMenu,
+            ShowStudentCoursesMenu
+        )
 
         print("""
              ===========================
