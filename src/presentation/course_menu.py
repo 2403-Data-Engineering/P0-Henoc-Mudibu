@@ -1,13 +1,12 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from models.course import Course
-from models.student import Student
 
 
 if TYPE_CHECKING:
     from presentation.terminal import Terminal
 
-from presentation.menu import ManageCoursesMenu, Menu
+from presentation.menu import Menu
 
 class NewCourseMenu(Menu):
 
@@ -49,6 +48,7 @@ class NewCourseMenu(Menu):
         print(f"Course '{new_course.name}' added successfully!")
         
         input("Press Enter to go back...")
+        from presentation.menu import ManageCoursesMenu
         self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
 
 
@@ -78,6 +78,7 @@ class ShowAllCoursesMenu(Menu):
 
         
         input("Press Enter to return to go back...")
+        from presentation.menu import ManageCoursesMenu
         self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
 
 
@@ -98,6 +99,7 @@ class UpdateCourseMenu(Menu):
         if course is None:
             print(f"No course found with ID {course_id}.")
             input("Press Enter to return to go back...")
+            from presentation.menu import ManageCoursesMenu
             self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
             return
         
@@ -145,6 +147,7 @@ class DeleteCourseMenu(Menu):
         if course is None:
             print(f"No course found with ID {course_id}.")
             input("Press Enter to return to go back...")
+            from presentation.menu import ManageCoursesMenu
             self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
             return
         
@@ -168,6 +171,7 @@ class EnrollStudentMenu(Menu):
         if not courses:
             print("No courses available for enrollment.")
             input("Press Enter to return to go back...")
+            from presentation.menu import ManageCoursesMenu
             self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
             return
         
@@ -226,6 +230,7 @@ class DropStudentMenu(Menu):
            if not student:
                print(f"No student found with ID {student_id}.")
                input("Press Enter to return to go back...")
+               from presentation.menu import ManageCoursesMenu
                self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
                return
            
@@ -258,6 +263,7 @@ class ShowEnrolledStudentsMenu(Menu):
 
 
         input("Press Enter to return to go back...")
+        from presentation.menu import ManageCoursesMenu
         self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
 
 
@@ -282,6 +288,7 @@ class ShowStudentCoursesMenu(Menu):
                 print(f"[{course.id}] {course.name} - {course.description}")
 
         input("Press Enter to return to go back...")
+        from presentation.menu import ManageCoursesMenu
         self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
 
 
