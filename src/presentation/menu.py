@@ -1,6 +1,7 @@
 from __future__ import annotations
 from abc import abstractmethod
 from typing import TYPE_CHECKING
+from models.professor import Professor
 from models.student import Student
 
 if TYPE_CHECKING:
@@ -332,13 +333,94 @@ class DeleteStudentMenu(Menu):
         self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
 
 
-# # To be implemented
+# To be implemented
 
-# class NewProfessorMenu(Menu):
-#     def render(self):
-#         print("\n[Professor Feature Coming Soon]")
-#         input("Press Enter to return...")
-#         self.terminal.navigateToMenu(MainMenu(self.terminal))
+class NewProfessorMenu(Menu):
+    def render(self):
+        print("""
+             ===========================
+                 Add New Professor
+             ===========================
+                    """)
+
+        print("Enter professor ID:")
+        id: int = int(input())
+        print("Enter first name:")
+        first_name: str = input()
+        print("Enter last name:")
+        last_name: str = input()
+        print("Enter email:")
+        email: str = input()
+        print("Enter department:")
+        department: str = input()
+
+        new_professor = Professor(id, first_name, last_name, email, department)
+        operation = self.terminal.professor_service.save(new_professor)
+
+        if operation:
+            print(f"Professor {first_name} {last_name} saved successfully.")
+
+        input("Press Enter to return to go back ...")
+        self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
+
+
+class UpdateProfessorMenu(Menu):
+    def render(self):
+        print("""
+             ===========================
+                 Update Professor
+             ===========================
+                    """)
+
+        print("Enter professor ID:")
+        professor_id: int = int(input())
+
+        professor = self.terminal.professor_service.get_professor_by_id(professor_id)
+
+        if professor is None:
+            print(f"No professor found with ID '{professor_id}'.")
+            input("Press Enter to return to go back...")
+            self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
+            return
+        
+        print(f"\nCurrent Last Name: {professor.last_name}")
+        print("Enter new last name (or press Enter to keep current):")
+        updated_last_name: str = input()
+
+        print(f"\nCurrent department: {professor.department}")
+        print("Enter new department (or press Enter to keep current):")
+        updated_department: str = input()   
+
+        self.terminal.professor_service.update_professor(professor_id, updated_last_name, updated_department)
+
+        input("\nPress Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
+
+
+class DeleteProfessorMenu(Menu):
+    def render(self):
+        print("""
+             ===========================
+                 Remove Professor
+             ===========================
+                    """)
+
+        print("Enter professor ID:")
+        professor_id: int = int(input())
+
+        professor = self.terminal.professor_service.get_professor_by_id(professor_id)
+
+        if professor is None:
+            print(f"No professor found with ID '{professor_id}'.")
+            input("Press Enter to return to go back...")
+            self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
+            return
+        
+        self.terminal.professor_service.delete_professor(professor_id)
+        print(f"Professor with ID '{professor_id}' has been removed.")
+
+        input("\nPress Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
 
 # class NewCourseMenu(Menu):
 #     def render(self):
