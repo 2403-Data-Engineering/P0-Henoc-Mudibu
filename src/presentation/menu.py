@@ -258,31 +258,98 @@ class ShowAllStudentsMenu(Menu):
             print("No students found.")
         else:
             for student in students:
-                print(f"{student.first_name} {student.last_name} - {student.email} - {student.year} - {student.major}")
+                print(f"[{student.id}] {student.first_name} {student.last_name} - {student.email} - {student.year} - {student.major}")
 
         
-        input("Press Enter to return to the main menu...")
-        self.terminal.navigateToMenu(MainMenu(self.terminal))
+        input("Press Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
 
 
-# To be implemented
-
-class NewProfessorMenu(Menu):
+class UpdateStudentMenu(Menu):
     def render(self):
-        print("\n[Professor Feature Coming Soon]")
-        input("Press Enter to return...")
-        self.terminal.navigateToMenu(MainMenu(self.terminal))
+        print("""
+             ===========================
+                  Update Student
+             ===========================
+                    """)
 
-class NewCourseMenu(Menu):
-    def render(self):
-        print("\n[Course Creation Coming Soon]")
-        input("Press Enter to return...")
-        self.terminal.navigate(MainMenu(self.terminal))
+        print("Enter student ID:")
+        student_id: int = int(input())
 
-class EnrollmentMenu(Menu):
+        student = self.terminal.student_service.get_student_by_id(student_id)
+
+        if student is None:
+            print(f"No student found with ID '{student_id}'.")
+            input("Press Enter to return to go back...")
+            self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
+            return
+    
+
+        print(f"\nCurrent Last Name: {student.last_name}")
+        print("Enter new last name (or press Enter to keep current):")
+        updated_last_name: str = input()
+
+        print(f"\nCurrent major: {student.major}")
+        print("Enter new major (or press Enter to keep current):")
+        updated_major: str = input()
+
+        print(f"\nCurrent email: {student.email}")
+        print("Enter new email (or press Enter to keep current):")
+        updated_email: str = input()
+
+        print(f"\nCurrent year: {student.year}")
+        print("Enter new year (or press Enter to keep current):")
+        updated_year: str = input()
+
+        self.terminal.student_service.update_student(student_id, updated_last_name, updated_major, updated_email, updated_year)
+
+        input("\nPress Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
+
+
+class DeleteStudentMenu(Menu):
     def render(self):
-        print("\n[Enrollment Feature Coming Soon]")
-        input("Press Enter to return...")
-        self.terminal.navigateToMenu(MainMenu(self.terminal))
+        print("""
+             ===========================
+                  Remove Student
+             ===========================
+                    """)
+        print("Enter student ID:")
+        student_id: int = int(input())
+
+        student = self.terminal.student_service.get_student_by_id(student_id)
+
+        if student is None:
+            print(f"No student found with ID '{student_id}'.")
+            input("Press Enter to return to go back...")
+            self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
+            return
+
+        self.terminal.student_service.delete_student(student_id)
+        print(f"Student with ID '{student_id}' has been removed.")
+
+        input("\nPress Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
+
+
+# # To be implemented
+
+# class NewProfessorMenu(Menu):
+#     def render(self):
+#         print("\n[Professor Feature Coming Soon]")
+#         input("Press Enter to return...")
+#         self.terminal.navigateToMenu(MainMenu(self.terminal))
+
+# class NewCourseMenu(Menu):
+#     def render(self):
+#         print("\n[Course Creation Coming Soon]")
+#         input("Press Enter to return...")
+#         self.terminal.navigate(MainMenu(self.terminal))
+
+# class EnrollmentMenu(Menu):
+#     def render(self):
+#         print("\n[Enrollment Feature Coming Soon]")
+#         input("Press Enter to return...")
+#         self.terminal.navigateToMenu(MainMenu(self.terminal))
 
             
