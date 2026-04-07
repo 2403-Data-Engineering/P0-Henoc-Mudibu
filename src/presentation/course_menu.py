@@ -127,3 +127,110 @@ class UpdateCourseMenu(Menu):
 
         input("Press Enter to return to go back...")
         self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+
+
+class DeleteCourseMenu(Menu):
+
+    def render(self):
+        print("""
+             ===========================
+                   Remove Course
+             ===========================
+                    """)
+        
+        print("Enter the course ID to delete:")
+        course_id: int = int(input())
+
+        course = self.terminal.course_service.get_course_by_id(course_id)
+        if course is None:
+            print(f"No course found with ID {course_id}.")
+            input("Press Enter to return to go back...")
+            self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+            return
+        
+        self.terminal.course_service.delete_course(course_id)
+        print(f"Course '{course.name}' deleted successfully!")
+
+        input("Press Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+
+
+class EnrollStudentMenu(Menu):
+
+    def render(self):
+        print("""
+             ===========================
+                  Enroll Student
+             ===========================
+                    """)
+        
+        courses = self.terminal.course_service.get_all_courses()
+        if not courses:
+            print("No courses available for enrollment.")
+            input("Press Enter to return to go back...")
+            self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+            return
+        
+        print("Available Courses:")
+        for course in courses:
+            print(f"[{course.id}] {course.name} - {course.code}")
+
+        print("\nEnter the course ID to enroll in:")
+        course_id: int = int(input())
+
+        # Show students to enroll in the course
+        students = self.terminal.student_service.get_all_students()
+        if not students:
+            print("No students available for enrollment.")
+            input("Press Enter to return to go back...")
+            self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+            return
+        
+        print("Available Students:")
+        for student in students:
+            print(f"[{student.id}] {student.first_name} {student.last_name} - {student.email}")
+
+        print("\nEnter the student ID to enroll in the course:")
+        student_id: int = int(input())
+
+        student = self.terminal.student_service.get_student_by_id(student_id)
+        if not student:
+            print(f"No student found with ID {student_id}.")
+            input("Press Enter to return to go back...")
+            self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+            return
+        
+        self.terminal.course_service.enroll_student(course_id, student_id)
+        print(f"Student '{student.first_name} {student.last_name}' enrolled in course '{course.name}' successfully!")
+
+        input("Press Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+
+
+class DropStudentMenu(Menu):
+
+    def render(self):
+           print("""
+             ===========================
+                   Drop Student
+             ===========================
+                    """)
+           
+           print("Enter the course ID to drop from:")
+           course_id: int = int(input())
+
+           print("Enter the student ID to drop from the course:")
+           student_id: int = int(input())
+
+           student = self.terminal.student_service.get_student_by_id(student_id)
+           if not student:
+               print(f"No student found with ID {student_id}.")
+               input("Press Enter to return to go back...")
+               self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
+               return
+           
+           self.terminal.course_service.drop_student(course_id, student_id)
+           print(f"Student '{student.first_name} {student.last_name}' dropped from course successfully!")
+
+           input("Press Enter to return to go back...")
+           self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
