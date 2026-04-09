@@ -410,6 +410,10 @@ class UpdateProfessorMenu(Menu):
             self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
             return
         
+        print(f"\nCurrent First Name: {professor.first_name}")
+        print("Enter new first name (or press Enter to keep current):")
+        updated_first_name: str = input()
+
         print(f"\nCurrent Last Name: {professor.last_name}")
         print("Enter new last name (or press Enter to keep current):")
         updated_last_name: str = input()
@@ -418,7 +422,12 @@ class UpdateProfessorMenu(Menu):
         print("Enter new department (or press Enter to keep current):")
         updated_department: str = input()   
 
-        self.terminal.professor_service.update_professor(professor_id, updated_last_name, updated_department)
+        print(f"\nCurrent email: {professor.email}")
+        print("Enter new email (or press Enter to keep current):")
+        updated_email: str = input()
+        
+
+        self.terminal.professor_service.update_professor(professor_id, updated_first_name, updated_last_name, updated_department, updated_email)
 
         input("\nPress Enter to return to go back...")
         self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))

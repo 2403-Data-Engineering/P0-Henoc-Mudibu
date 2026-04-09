@@ -38,7 +38,7 @@ class ProfessorDAO:
 
     def get_professor_by_id(self, professor_id: int) -> Professor | None:
         
-        sql= """SELECT * FROM professors WHERE id = %s"""
+        sql= """SELECT * FROM professors WHERE professor_id = %s"""
 
         try:
             with DBConnection().get_connection() as conn:
@@ -92,3 +92,32 @@ class ProfessorDAO:
             print(f"Error while retrieving professors: {e}")
             return []
 
+    def update_professor(self, professor: Professor) -> bool:
+
+        sql = """
+            UPDATE professors
+            SET first_name = %s, last_name = %s, department = %s, email = %s
+            WHERE professor_id = %s
+            """
+
+        values = (
+            professor.first_name if professor.first_name else None,
+            professor.last_name if professor.last_name else None,
+            professor.department if professor.department else None,
+            professor.email if professor.email else None,
+            professor.id    
+        )
+
+        try:
+            with DBConnection().get_connection() as conn:
+                with closing(conn.cursor()) as cursor:
+
+                    cursor.execute(sql, values)
+
+                    conn.commit()
+
+                    return cursor.rowcount > 0
+                
+        except Error as e:
+            print(f"Error while updating professor: {e}")
+            return False
