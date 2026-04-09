@@ -214,24 +214,24 @@ class NewStudentMenu(Menu):
     def render(self):
         print("""Create New Student""")
         print()
-        print("Enter the student's id:")
-        id: int = int(input())
         print("Enter first name:")
         first_name: str = input()
         print("Enter last name:")
         last_name: str = input()
+        print("Enter major: ")
+        major: str = input()
         print("Enter email:")
         email: str = input()
         print("Enter year: ")
         year: str = input()
-        print("Enter major: ")
-        major: str = input()
-
+        
+        id=None
+        
         new_student = Student(id, first_name, last_name, major, email, year)
         self.terminal.student_service.save(new_student)
 
         input("Press Enter to return to go back ...")
-        self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
+        self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal)) 
 
 
 class ShowStudentMenu(Menu):

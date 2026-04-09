@@ -1,17 +1,34 @@
 
 
 
+from dao.student_dao import StudentDAO
 from models.student import Student
 
 
 class StudentService:
 
     def __init__(self):
-        self.students_list: list[Student] = []
+        # self.students_list: list[Student] = []
+        self.student_dao = StudentDAO()
 
-    def save(self, student: Student):
-        self.students_list.append(student)
-        print(f"Student {student.first_name}-{student.last_name} saved successfully")
+    def save(self, student: Student) -> Student | None:
+        # self.students_list.append(student)
+        # print(f"Student {student.first_name}-{student.last_name} saved successfully")
+
+        fields = [student.first_name, student.last_name, student.major, student.email, student.year]
+
+        if not all(fields):
+            print("All student fields must be provided. Save failed.")
+            return None
+        
+        saved_student = self.student_dao.save(student)
+
+        if saved_student:
+            print(f"\n[SUCCESS]Student {saved_student.first_name} {saved_student.last_name} saved successfully with ID {saved_student.id}.")
+        else:
+            print("\n[ERROR] Failed to save student.")
+
+        return 
 
     # def print_student_info(self, student: Student):
     #     print(f"Name: {student.first_name}-{student.last_name}")
