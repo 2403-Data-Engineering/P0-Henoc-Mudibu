@@ -65,12 +65,16 @@ class ProfessorService:
     
     def delete_professor(self, professor_id: int) -> bool:
 
-        professor = self.get_professor_by_id(professor_id)
+        professor = self.professor_dao.get_professor_by_id(professor_id)
 
         if professor is None:
             print(f"No professor found with ID {professor_id}. Deletion failed.")
             return False
         
-        self.professors_list.remove(professor)
-        print(f"Professor {professor.id} deleted successfully.")
-        return True
+        deleted = self.professor_dao.delete_professor(professor_id)
+        if deleted:
+            print(f"Professor {professor.id} deleted successfully.")
+            return True
+        else:
+            print(f"Failed to delete Professor {professor.id}.")
+            return False

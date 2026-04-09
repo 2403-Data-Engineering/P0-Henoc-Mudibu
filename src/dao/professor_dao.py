@@ -121,3 +121,21 @@ class ProfessorDAO:
         except Error as e:
             print(f"Error while updating professor: {e}")
             return False
+        
+    def delete_professor(self, professor_id: int) -> bool:
+
+        sql = "DELETE FROM professors WHERE professor_id = %s"
+
+        try:
+            with DBConnection().get_connection() as conn:
+                with closing(conn.cursor()) as cursor:
+
+                    cursor.execute(sql, (professor_id,))
+
+                    conn.commit()
+
+                    return cursor.rowcount > 0
+                
+        except Error as e:
+            print(f"Error while deleting professor: {e}")
+            return False
