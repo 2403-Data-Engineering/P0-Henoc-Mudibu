@@ -34,3 +34,61 @@ class ProfessorDAO:
         except Error as e:
             print(f"Error while saving professor: {e}")
             return None
+        
+
+    def get_professor_by_id(self, professor_id: int) -> Professor | None:
+        
+        sql= """SELECT * FROM professors WHERE id = %s"""
+
+        try:
+            with DBConnection().get_connection() as conn:
+                with closing(conn.cursor()) as cursor:
+
+                    cursor.execute(sql, (professor_id,))
+                    
+                    row = cursor.fetchone()
+
+                    if row:
+                        return Professor(
+                            id=row[0],
+                            first_name=row[1],
+                            last_name=row[2],
+                            department=row[3],
+                            email=row[4]
+                        )
+                    return None
+                
+        except Error as e:
+            print(f"Error while retrieving professor: {e}")
+            return None
+        
+
+    def get_all_professors(self) -> list[Professor]:
+
+        sql= """SELECT * FROM professors"""
+
+        professors= []
+
+        try:
+            with DBConnection().get_connection() as conn:
+                with closing(conn.cursor()) as cursor:
+
+                    cursor.execute(sql)
+
+                    rows = cursor.fetchall()
+
+                    for row in rows:
+                        professors.append(Professor(
+                            id=row[0],
+                            first_name=row[1],
+                            last_name=row[2],
+                            department=row[3],
+                            email=row[4]
+                        ))
+
+                    return professors
+                
+        except Error as e:
+            print(f"Error while retrieving professors: {e}")
+            return []
+

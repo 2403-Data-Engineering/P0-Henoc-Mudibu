@@ -25,13 +25,15 @@ class ProfessorService:
     
 
     def get_all_professors(self) -> list[Professor]:
-        return self.professors_list
+        return self.professor_dao.get_all_professors()
 
     def get_professor_by_id(self, professor_id: int) -> Professor | None:
-        for professor in self.professors_list:
-            if professor.id == professor_id:
-                return professor
-        return None
+        
+        if professor_id is None or professor_id <= 0:
+            print("Enter a valid Professor ID")
+            return None
+        
+        return self.professor_dao.get_professor_by_id(professor_id)
     
     def update_professor(self, professor_id: int, updated_last_name: str, updated_department: str) -> bool:
 
