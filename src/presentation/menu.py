@@ -226,7 +226,7 @@ class NewStudentMenu(Menu):
         year: str = input()
         
         id=None
-        
+
         new_student = Student(id, first_name, last_name, major, email, year)
         self.terminal.student_service.save(new_student)
 
@@ -315,15 +315,23 @@ class UpdateStudentMenu(Menu):
         updated_year: str = input()
 
 
-        updated_student = Student(
-            student_id,
-            student.first_name, 
-            updated_last_name if updated_last_name else student.last_name, 
-            updated_major if updated_major else student.major, 
-            updated_email if updated_email else student.email, 
-            updated_year if updated_year else student.year)
+        # updated_student = Student(
+        #     student_id,
+        #     student.first_name, 
+        #     updated_last_name if updated_last_name else student.last_name, 
+        #     updated_major if updated_major else student.major, 
+        #     updated_email if updated_email else student.email, 
+        #     updated_year if updated_year else student.year)
+
+        first_name = student.first_name
+        last_name = updated_last_name if updated_last_name else student.last_name
+        major = updated_major if updated_major else student.major
+        email = updated_email if updated_email else student.email
+        year = updated_year if updated_year else student.year
+
+
         
-        self.terminal.student_service.update_student(student_id, updated_student)
+        self.terminal.student_service.update_student(student_id, first_name, last_name, major, email, year)
 
         input("\nPress Enter to return to go back...")
         self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))

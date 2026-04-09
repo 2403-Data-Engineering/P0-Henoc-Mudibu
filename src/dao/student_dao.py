@@ -114,7 +114,66 @@ class StudentDAO:
         
 
     def update_student(self, student: Student) -> bool:
-        if student.id is None:
-            print("Student ID is required for update.")
+        
+        sql= """
+            UPDATE students
+            SET first_name = COALESCE(%s, first_name),
+                last_name = COALESCE(%s, last_name),
+                major = COALESCE(%s, major),
+                email = COALESCE(%s, email),
+                year = COALESCE(%s, year)
+            WHERE id = %s
+        """
+
+        values = (
+            student.first_name if student.first_name else None,
+            student.last_name if student.last_name else None,
+            student.major if student.major else None,
+            student.email if student.email else None,
+            student.year if student.year else None,
+            student.id
+        )
+
+        try:
+            with DBConnection().get_connection() as conn:
+
+                with closing(conn.cursor()) as cursor:
+
+                    cursor.execute(sql, values)
+
+                    conn.commit()
+
+                    if cursor.rowcount > 0:
+                        print(f"Student with ID {student.id} updated successfully.")
+                        return True
+                    else:
+                        print(f"No student found with ID {student.id}. Update failed.")
+                        return False
+                    
+        except Error as e:
+            print(f"Error while updating student: {e}")
             return False
         
+
+    def delete_student(self, student_id: int) -> bool:
+
+        sql= "DELETE FROM students WHERE id = %s"
+
+        try:
+            with DBConnection().get_connection() as conn:
+                with closing(conn.cursor()) as cursor:
+
+                    cursor.execute(sql, (student_id,))
+
+                    conn.commit()
+
+                    if cursor.rowcount > 0:
+                        print(f"Student with ID {student_id} deleted successfully.")
+                        return True
+                    else:
+                        print(f"No student found with ID {student_id}. Deletion failed.")
+                        return False
+                    
+        except Error as e:
+            print(f"Error while deleting student: {e}")
+            return False

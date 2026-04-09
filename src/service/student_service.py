@@ -71,20 +71,46 @@ class StudentService:
 
 
     
-    def update_student(self, id: int, updated_student: Student) -> bool:
-        for index, student in enumerate(self.students_list):
-            if student.id == id:
-                self.students_list[index] = updated_student
-                return True
-            
-        print(f"Student with id {id} not found.")
-        return False
+    def update_student(
+            self, id: int, 
+            first_name: str | None, 
+            last_name: str | None, 
+            major: str | None, 
+            email: str | None, 
+            year: int | None
+        ) -> bool:
+
+        
+        if id is None or id <= 0:
+            print("Enter a valid Student ID")
+            return False
+        
+        student = self.student_dao.get_student_by_id(id)
+        if not student:
+            print(f"No student found with ID {id}. Update failed.")
+            return False
+        
+        updated_student = Student(
+            id=id,
+            first_name=first_name or student.first_name,
+            last_name=last_name or student.last_name,
+            major=major or student.major,
+            email=email or student.email,
+            year=year or student.year
+        )
+
+        return self.student_dao.update_student(updated_student)
+
+
 
     def delete_student(self, id: int) -> bool:
-        for index, student in enumerate(self.students_list):
-            if student.id == id:
-                del self.students_list[index]
-                return True
-            
-        print(f"Student with id {id} not found.")
-        return False
+        if id is None or id <= 0:
+            print("Enter a valid Student ID")
+            return False
+        
+        student = self.student_dao.get_student_by_id(id)
+        if not student:
+            print(f"No student found with ID {id}. Deletion failed.")
+            return False
+        
+        return self.student_dao.delete_student(id)
