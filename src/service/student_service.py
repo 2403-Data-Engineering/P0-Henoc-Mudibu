@@ -36,12 +36,12 @@ class StudentService:
     #     print(f"Email: {student.email}")
     #     print(f"Year: {student.year}")
 
-    def get_all_students(self) -> list[str]:
+    def get_all_students(self) -> list[Student]:
         # formatted_Students = []
         # for student in self.students_list:
         #     line = f"{student.first_name}-{student.last_name} - {student.major} - {student.email} - {student.year}"
         #     formatted_Students.append(line)
-        return self.students_list
+        return self.student_dao.get_all_students()
 
 
     # def get_student_by_first_name(self, first_name: str) -> Student | None:
@@ -51,10 +51,25 @@ class StudentService:
     #     return None
 
     def get_student_by_id(self, id: int) -> Student | None:
-        for student in self.students_list:
-            if student.id == id:
-                return student
+        
+        if id is None:
+            print("Student ID is required to retrieve student.")
+            return None
+        
+        if id <= 0:
+            print("Enter a valid Student ID")
+            return None
+        
+        student = self.student_dao.get_student_by_id(id)
+
+        if student:
+            return student
+        else:
+            print(f"\n[ERROR] No student found with ID {id}.")
+
         return None
+
+
     
     def update_student(self, id: int, updated_student: Student) -> bool:
         for index, student in enumerate(self.students_list):

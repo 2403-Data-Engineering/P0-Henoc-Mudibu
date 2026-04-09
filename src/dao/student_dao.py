@@ -36,3 +36,85 @@ class StudentDAO:
         except Error as e:
             print(f"Error while saving student: {e}")
             return None
+        
+    
+    def get_student_by_id(self, student_id: int) -> Student | None:
+
+        if student_id is None:
+            print("Student ID is required to retrieve student.")
+            return None
+        
+        if student_id <= 0:
+            print("Enter a valid Student ID")
+            return None
+        
+        sql= """
+            SELECT id, first_name, last_name, major, email, year FROM students WHERE id = %s
+            """
+        
+        try:
+            with DBConnection().get_connection() as conn:
+
+                with closing(conn.cursor()) as cursor:
+
+                    cursor.execute(sql, (student_id,))
+
+                    row = cursor.fetchone()
+
+                    if row:
+                        return Student(
+                            id=row[0],
+                            first_name=row[1],
+                            last_name=row[2],
+                            major=row[3],
+                            email=row[4],
+                            year=row[5]
+                        )
+                return None
+        except Error as e:
+            print(f"Error while retrieving student: {e}")
+            return None
+        
+    def get_all_students(self) -> list[Student]:
+
+        sql = "SELECT * FROM students"
+
+        students =[]
+
+        try:
+            with DBConnection().get_connection() as conn:
+
+                with closing(conn.cursor()) as cursor:
+
+                    cursor.execute(sql)
+
+                    rows = cursor.fetchall()
+
+                    if rows:
+                        for row in rows:
+                            students.append(Student(
+                                id=row[0],
+                                first_name=row[1],
+                                last_name=row[2],
+                                major=row[3],
+                                email=row[4],
+                                year=row[5]
+                            )
+                        )
+                    else:
+                        print("No students found in the database.")
+        
+                return students
+            
+        except Error as e:
+            print(f"Error while retrieving students: {e}")
+            return []
+                        
+
+        
+
+    def update_student(self, student: Student) -> bool:
+        if student.id is None:
+            print("Student ID is required for update.")
+            return False
+        
