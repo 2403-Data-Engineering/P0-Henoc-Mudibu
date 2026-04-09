@@ -18,7 +18,7 @@ class Terminal:
         # This ensures all menus read and write to the same data.
         self.student_service = StudentService()
         self.professor_service = ProfessorService()
-        self.courses_service = CourseService()
+        self.course_service = CourseService()
         
         #Start with the Main Menu
         self.current_menu = MainMenu(self)

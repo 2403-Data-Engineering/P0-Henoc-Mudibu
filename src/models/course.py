@@ -11,5 +11,6 @@ class Course:
     name: str
     code: str
     professor_id: int | None
-
+    description: str
+    professor_id: int | None
     enrolled_students: list = field(default_factory=list)

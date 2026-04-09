@@ -97,7 +97,7 @@ class ManageStudentsMenu(Menu):
                 self.terminal.navigateToMenu(UpdateStudentMenu(self.terminal))
 
             case "5":
-                self.terminal.navigateToMenu(RemoveStudentMenu(self.terminal))
+                self.terminal.navigateToMenu(DeleteStudentMenu(self.terminal))
 
             case "b":
                 self.terminal.navigateToMenu(MainMenu(self.terminal))
@@ -314,7 +314,16 @@ class UpdateStudentMenu(Menu):
         print("Enter new year (or press Enter to keep current):")
         updated_year: str = input()
 
-        self.terminal.student_service.update_student(student_id, updated_last_name, updated_major, updated_email, updated_year)
+
+        updated_student = Student(
+            student_id,
+            student.first_name, 
+            updated_last_name if updated_last_name else student.last_name, 
+            updated_major if updated_major else student.major, 
+            updated_email if updated_email else student.email, 
+            updated_year if updated_year else student.year)
+        
+        self.terminal.student_service.update_student(student_id, updated_student)
 
         input("\nPress Enter to return to go back...")
         self.terminal.navigateToMenu(ManageStudentsMenu(self.terminal))
@@ -432,6 +441,21 @@ class DeleteProfessorMenu(Menu):
         print(f"Professor with ID '{professor_id}' has been removed.")
 
         input("\nPress Enter to return to go back...")
+        self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
+
+class ShowAllProfessorsMenu(Menu):
+    def render(self):
+        print("""All Registered Professors""")
+        professors = self.terminal.professor_service.get_all_professors()
+
+        if not professors:
+            print("No professors found.")
+        else:
+            for professor in professors:
+                print(f"[{professor.id}] {professor.first_name} {professor.last_name} - {professor.email} - {professor.department}")
+
+        
+        input("Press Enter to return to go back...")
         self.terminal.navigateToMenu(ManageProfessorsMenu(self.terminal))
 
 # class NewCourseMenu(Menu):

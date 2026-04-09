@@ -42,7 +42,7 @@ class NewCourseMenu(Menu):
 
             professor_id = int(professor_id_input) if professor_id_input.strip() else None
 
-        new_course = Course(id=id, name=name, code=code, description=description, assigned_professor_id=professor_id)
+        new_course = Course(id=id, name=name, code=code, description=description, professor_id=professor_id)
         self.terminal.course_service.save(new_course)
 
         print(f"Course '{new_course.name}' added successfully!")
@@ -108,8 +108,6 @@ class UpdateCourseMenu(Menu):
         new_name: str = input()
 
         print(f"Current code: {course.code}")
-        print("Enter new code (or press Enter to keep current):")
-        new_code: str = input() 
 
         print(f"\nCurrent professor: {course.professor_id}")
 
@@ -124,9 +122,10 @@ class UpdateCourseMenu(Menu):
             professor_id_input = input()
             new_professor_id = int(professor_id_input) if professor_id_input.strip() else course.professor_id
 
-        self.terminal.course_service.update_course(course_id, new_name, new_code, new_professor_id)
+        self.terminal.course_service.update_course(course_id, new_name, new_professor_id)
         print(f"Course '{course.name}' updated successfully!")
 
+        from presentation.menu import ManageCoursesMenu
         input("Press Enter to return to go back...")
         self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
 
@@ -153,6 +152,8 @@ class DeleteCourseMenu(Menu):
         
         self.terminal.course_service.delete_course(course_id)
         print(f"Course '{course.name}' deleted successfully!")
+
+        from presentation.menu import ManageCoursesMenu
 
         input("Press Enter to return to go back...")
         self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
@@ -186,6 +187,8 @@ class EnrollStudentMenu(Menu):
         students = self.terminal.student_service.get_all_students()
         if not students:
             print("No students available for enrollment.")
+
+            from presentation.menu import ManageCoursesMenu
             input("Press Enter to return to go back...")
             self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
             return
@@ -200,6 +203,8 @@ class EnrollStudentMenu(Menu):
         student = self.terminal.student_service.get_student_by_id(student_id)
         if not student:
             print(f"No student found with ID {student_id}.")
+
+            from presentation.menu import ManageCoursesMenu
             input("Press Enter to return to go back...")
             self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
             return
@@ -207,6 +212,7 @@ class EnrollStudentMenu(Menu):
         self.terminal.course_service.enroll_student(course_id, student_id)
         print(f"Student '{student.first_name} {student.last_name}' enrolled in course '{course.name}' successfully!")
 
+        from presentation.menu import ManageCoursesMenu
         input("Press Enter to return to go back...")
         self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
 
@@ -237,6 +243,7 @@ class DropStudentMenu(Menu):
            self.terminal.course_service.drop_student(course_id, student_id)
            print(f"Student '{student.first_name} {student.last_name}' dropped from course successfully!")
 
+           from presentation.menu import ManageCoursesMenu
            input("Press Enter to return to go back...")
            self.terminal.navigateToMenu(ManageCoursesMenu(self.terminal))
 

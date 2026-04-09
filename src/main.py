@@ -9,9 +9,9 @@ from service.student_service import StudentService
 
 def main():
 
-    student_Service = StudentService()
+    #student_Service = StudentService()
 
-    terminal = Terminal(student_Service)
+    terminal = Terminal()
 
     while terminal.running:
         terminal.current_menu.render()
