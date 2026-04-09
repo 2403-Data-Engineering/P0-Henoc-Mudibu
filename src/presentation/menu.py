@@ -372,8 +372,6 @@ class NewProfessorMenu(Menu):
              ===========================
                     """)
 
-        print("Enter professor ID:")
-        id: int = int(input())
         print("Enter first name:")
         first_name: str = input()
         print("Enter last name:")
@@ -382,9 +380,9 @@ class NewProfessorMenu(Menu):
         email: str = input()
         print("Enter department:")
         department: str = input()
+        id=None
 
-        new_professor = Professor(id, first_name, last_name, email, department)
-        operation = self.terminal.professor_service.save(new_professor)
+        operation = self.terminal.professor_service.save(first_name, last_name, email, department)
 
         if operation:
             print(f"Professor {first_name} {last_name} saved successfully.")

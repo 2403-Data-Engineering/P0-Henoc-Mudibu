@@ -1,14 +1,28 @@
+from dao.professor_dao import ProfessorDAO
 from models.professor import Professor
 
 
 class ProfessorService:
 
     def __init__(self):
-        self.professors_list: list[Professor] = []
+        self.professor_dao = ProfessorDAO()
 
-    def save(self, professor: Professor) -> None:
-        self.professors_list.append(professor)
-        print(f"Professor {professor.id}: {professor.first_name}-{professor.last_name} saved successfully")
+    def save(self, first_name: str, last_name: str, email: str, department: str) -> Professor | None:
+
+        if not all([first_name, last_name, email, department]):
+            print("All professor fields must be provided. Save failed.")
+            return None
+        
+        professor = Professor(
+            id=None,
+            first_name=first_name.strip(),
+            last_name=last_name.strip(),
+            email=email.strip(),
+            department=department.strip() if department else None
+        )
+
+        return self.professor_dao.save(professor)
+    
 
     def get_all_professors(self) -> list[Professor]:
         return self.professors_list
