@@ -38,7 +38,7 @@ class ProfessorDAO:
 
     def get_professor_by_id(self, professor_id: int) -> Professor | None:
         
-        sql= """SELECT * FROM professors WHERE professor_id = %s"""
+        sql= """SELECT id, first_name, last_name, department, email FROM professors WHERE id = %s"""
 
         try:
             with DBConnection().get_connection() as conn:
@@ -97,7 +97,7 @@ class ProfessorDAO:
         sql = """
             UPDATE professors
             SET first_name = %s, last_name = %s, department = %s, email = %s
-            WHERE professor_id = %s
+            WHERE id = %s
             """
 
         values = (
@@ -124,7 +124,7 @@ class ProfessorDAO:
         
     def delete_professor(self, professor_id: int) -> bool:
 
-        sql = "DELETE FROM professors WHERE professor_id = %s"
+        sql = "DELETE FROM professors WHERE id = %s"
 
         try:
             with DBConnection().get_connection() as conn:

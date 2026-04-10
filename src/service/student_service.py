@@ -28,7 +28,7 @@ class StudentService:
         else:
             print("\n[ERROR] Failed to save student.")
 
-        return 
+        return saved_student
 
     # def print_student_info(self, student: Student):
     #     print(f"Name: {student.first_name}-{student.last_name}")

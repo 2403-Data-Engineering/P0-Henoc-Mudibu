@@ -202,11 +202,34 @@ class ReportsMenu(Menu):
 
     def render(self) -> None:
 
-        print("""
+        while True:  # loop so user can stay in reports menu
+            print("""
              ===========================
-                    Reports Menu Coming Soon
+                   Reports Menu
              ===========================
-                    """)
+             1) Generate Enrollment Report
+             2) Back
+            """)
+
+            choice = input("Select an option: ").strip()
+
+            # Option 1 → generate HTML report
+            if choice == "1":
+                from scripts.enrollment_report import generate_enrollment_report
+
+                generate_enrollment_report()  # call your yattag function
+
+                print("\nReport generated successfully!")
+                input("Press Enter to continue...")
+
+            # Option 2 → go back
+            elif choice == "2":
+                from presentation.menu import MainMenu  # or your parent menu
+                self.terminal.navigateToMenu(MainMenu(self.terminal))
+                return
+
+            else:
+                print("Invalid choice. Try again.")
 
 
 class NewStudentMenu(Menu):
